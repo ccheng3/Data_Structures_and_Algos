@@ -28,6 +28,7 @@ class Queue {
         int size; 
     public:
         Queue(Node* arg_front = nullptr, Node* arg_back = nullptr) : front(arg_front), back(arg_back) { size = 0; }
+        ~Queue() { Clear(); }
         Node* Get_Front() const { return front; }
         Node* Get_Back() const { return back; }
         int Get_Size() const { return size; }
@@ -41,8 +42,9 @@ class Queue {
                 front = front->Get_Next();
                 delete tempPtr;
                 tempPtr = front;
+                --size;
             }
-            delete tempPtr;
+            delete tempPtr, --size;
             front = back = nullptr;
         }
         void Push(int data) {
@@ -90,6 +92,7 @@ int main() {
     cout << "My queue is empty: " << boolalpha << my_queue.isEmpty() << endl;
     my_queue.Print_Data();
     cout << "Number of elements is: " << my_queue.Get_Size() << endl;
+    my_queue.Clear();
     for (int i = 0; i < 5; ++i) {
         my_queue.Push((i+1)*5);
     }
