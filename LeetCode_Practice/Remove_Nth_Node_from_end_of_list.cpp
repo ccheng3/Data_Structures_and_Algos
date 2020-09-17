@@ -61,4 +61,32 @@ public:
         delete anchorPtr;
         return head;
     }
+
+    // use of dummy Node takes care of one Node case (b/c deleting a Node in singly list
+    // requires you to modify connection of target Node's previous Node)
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        // fast and slow pointer for one pass, using a dummy Node
+        // create dummy Node
+        ListNode* dummy = new ListNode(-1);
+        // link dummy Node to head Node
+        dummy->next = head;
+        // create fast and slow pointers at dummy
+        ListNode* fast = dummy;
+        ListNode* slow = dummy;
+        // move the pointers into correct relative distance of n, then move them up together
+        // until fast->next is nullptr.
+        while (fast->next != nullptr) {
+            fast = fast->next;
+            --n;
+            // here is where I made the error --> you have to check that fast->next still not NULL after moving fast ptr earlier. 
+            if ((n <= 0) && (fast->next != nullptr)) {
+                slow = slow->next;
+            }
+        }
+        // remove the target Node
+        ListNode* temp = slow->next;
+        slow->next = slow->next->next;
+        delete temp;
+        return dummy->next;
+    }
 };
