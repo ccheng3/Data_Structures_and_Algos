@@ -6,6 +6,7 @@ my self-study DSA work to prep for leetcode, then coding interviews
 Weiss: DSA in C++, 4th Edition\
 Y. Daniel Liang: Intro to Java Comprehensive Version, 10th Edition\
 Goodrich et al: DSA in C++, 2nd Edition\
+Goodrich et al: DSA in Python (2013) --> Recursion chapter\
 Carrano & Henry: Data Abstraction, Problem Solving in C++, 6th Edition\
 
 ### Websites
@@ -30,4 +31,11 @@ William Fiset\
 Blue Tree Code\
 Byte By Byte\
 CS Dojo\
+
+#### Edit 09/16/2020
+Fisher Coder (Paul Huang)
+Abdul Bari's YT section
 ...
+
+## Leetcode Practice
+### includes Explore card practice and actual LC problems
