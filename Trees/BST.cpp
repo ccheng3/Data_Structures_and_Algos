@@ -36,8 +36,12 @@ struct BSTNode {
 
 class BinarySearchTree {
 private:
-    BSTNode* root;
+    BSTNode* root = nullptr;
 public:
+    BinarySearchTree() { root = nullptr; }
+    ~BinarySearchTree() {
+        // call the recursive clear() method to delete all the nodes
+    }
     void Set_Root(BSTNode* node) {
         root = node;
     }
@@ -51,29 +55,95 @@ public:
             return newNode;
         }
         else if (data_val < root->data) {
-            Insert(root->leftChild, data_val);
+            root->leftChild = Insert(root->leftChild, data_val);
         }
         else if (data_val > root->data) {
-            Insert(root->rightChild, data_val);
+            root->rightChild = Insert(root->rightChild, data_val);
         }
         return root;
     }
 
+    BSTNode* Contains(BSTNode* root, int search_val) {
+        // tree is empty or search_val DNE in the BST
+        if (root == nullptr) {
+            return nullptr;
+        }
+        // you found the search_val 
+        else if (search_val == root->data) {
+            return root;
+        }
+        // search_val is less than current node's val
+        else if (search_val < root->data) {
+           return Contains(root->leftChild, search_val);
+        }
+        // search_val is greater than current node's val
+        else {
+            return Contains(root->rightChild, search_val);
+        }
+    }
+    
+    // inorder traversal of the nodes
     void Print_Inorder(BSTNode*root) {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         cout << "Node value: " << root->data << endl;
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
     }
 
+    // opposite of inorder traversal; prints nodes of BST in descending order
+    void Print_Descending_Order(BSTNode* root) {
+        if (root->rightChild != nullptr) Print_Descending_Order(root->rightChild);
+        cout << "Node value: " << root->data << endl;
+        if (root->leftChild != nullptr) Print_Descending_Order(root->leftChild);
+    }
+
+    // preorder traversal of the nodes
     void Print_Preorder(BSTNode*root) {
         cout << "Node value: " << root->data << endl;
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
     }
 
+    // postorder traversal of the nodes
     void Print_Postorder(BSTNode*root) {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
         cout << "Node value: " << root->data << endl;
     }
 };
+
+void Check_Int_Val_Present_in_BST(BinarySearchTree mytree, int val) {
+    if (mytree.Contains(mytree.Get_Root(), val) != nullptr) {
+        cout << "The value: " << val << " is present in the BST" << endl;
+    }
+    else {
+        cout << "The value: " << val << " is NOT present in the BST" << endl;
+    }
+}
+
+int main() {
+    BinarySearchTree mytree;
+    int test_array[] = {14, 10, 20, 3, 13, 19};
+
+    // I forgot that you gotta use vector to get the size()/length() methods.
+    // For array you gotta use the sizeof() operator trick.
+    for (int i = 0; i < sizeof(test_array)/sizeof(test_array[0]); ++i) {
+        mytree.Set_Root(mytree.Insert(mytree.Get_Root(),test_array[i]));
+    }
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),14));
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),10));
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),20));
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),3));
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),13));
+    // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),19));
+
+    // mytree.Print_Inorder(mytree.Get_Root());
+    // cout << endl << endl;
+    // mytree.Print_Descending_Order(mytree.Get_Root());
+
+    int check_array[] = {2, 14, 3, 8, 20, 19};
+    for (int i = 0; i < sizeof(check_array)/sizeof(check_array[0]); ++i) {
+        Check_Int_Val_Present_in_BST(mytree, check_array[i]);
+    }
+    
+    return 0;
+} 
