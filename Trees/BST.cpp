@@ -48,6 +48,8 @@ public:
     BSTNode* Get_Root() {
         return root;
     }
+
+    // recursive Node insertion function
     BSTNode* Insert(BSTNode* root, int data_val) {
         if (root == nullptr) {
             BSTNode* newNode = new BSTNode(data_val);
@@ -63,6 +65,7 @@ public:
         return root;
     }
 
+    // recursive Node search function 
     BSTNode* Contains(BSTNode* root, int search_val) {
         // tree is empty or search_val DNE in the BST
         if (root == nullptr) {
@@ -82,6 +85,40 @@ public:
         }
     }
     
+    // recursive Node deletion function
+    BSTNode* Remove(BSTNode* root, int data) {
+
+    }
+
+    // return a pointer to min int value in BST or a nullptr if empty tree
+    BSTNode* Find_Minimum_Val(BSTNode* root) {
+        // empty tree case
+        if (root == nullptr) {
+            return nullptr;
+        }
+        // you got to min val in the BST case
+        else if (root->leftChild == nullptr) {
+            return root;
+        }
+        // otherwise recurse again with node's left child 
+        else {
+            return Find_Minimum_Val(root->leftChild);
+        }
+    }
+
+    // return a pointer to max int value in BST or a nullptr if empty tree
+    BSTNode* Find_Maximum_Val(BSTNode* root) {
+        if (root == nullptr) {
+            return nullptr;
+        }
+        else if (root->rightChild == nullptr) {
+            return root;
+        }
+        else {
+            return Find_Maximum_Val(root->rightChild);
+        }
+    }
+
     // inorder traversal of the nodes
     void Print_Inorder(BSTNode*root) {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
@@ -136,14 +173,21 @@ int main() {
     // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),13));
     // mytree.Set_Root(mytree.Insert(mytree.Get_Root(),19));
 
-    // mytree.Print_Inorder(mytree.Get_Root());
-    // cout << endl << endl;
+    mytree.Print_Inorder(mytree.Get_Root());
+    cout << endl << endl;
     // mytree.Print_Descending_Order(mytree.Get_Root());
 
     int check_array[] = {2, 14, 3, 8, 20, 19};
     for (int i = 0; i < sizeof(check_array)/sizeof(check_array[0]); ++i) {
         Check_Int_Val_Present_in_BST(mytree, check_array[i]);
     }
+    cout << endl;
+
+    cout << "Maximum val in the BST is: " 
+         << mytree.Find_Maximum_Val(mytree.Get_Root())->data << endl;
+
+    cout << "Minimum val in the BST is: " 
+         << mytree.Find_Minimum_Val(mytree.Get_Root())->data << endl;
     
     return 0;
 } 
