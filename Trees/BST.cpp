@@ -119,6 +119,14 @@ public:
         }
     }
 
+    // check if tree is empty 
+    bool isEmpty(BinarySearchTree mytree) {
+        if (mytree.Get_Root() != nullptr) {
+            return true;
+        }
+        return false;
+    }
+
     // inorder traversal of the nodes
     void Print_Inorder(BSTNode*root) {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
@@ -148,12 +156,35 @@ public:
     }
 };
 
+
+
+
+
 void Check_Int_Val_Present_in_BST(BinarySearchTree mytree, int val) {
     if (mytree.Contains(mytree.Get_Root(), val) != nullptr) {
         cout << "The value: " << val << " is present in the BST" << endl;
     }
     else {
         cout << "The value: " << val << " is NOT present in the BST" << endl;
+    }
+}
+
+void Check_Max_Val(BinarySearchTree mytree) {
+    if (mytree.Find_Maximum_Val(mytree.Get_Root()) != nullptr) {
+        cout << "Maximum val in the BST is: " 
+        << mytree.Find_Maximum_Val(mytree.Get_Root())->data << endl;
+    }
+    else {
+        cout << "Tree is empty." << endl;
+    }
+}
+void Check_Min_Val(BinarySearchTree mytree) {
+    if (mytree.Find_Minimum_Val(mytree.Get_Root()) != nullptr) {
+        cout << "Minimum val in the BST is: " 
+         << mytree.Find_Minimum_Val(mytree.Get_Root())->data << endl;
+    }
+    else {
+        cout << "Tree is empty." << endl;
     }
 }
 
@@ -183,11 +214,10 @@ int main() {
     }
     cout << endl;
 
-    cout << "Maximum val in the BST is: " 
-         << mytree.Find_Maximum_Val(mytree.Get_Root())->data << endl;
+    Check_Max_Val(mytree);
+    Check_Min_Val(mytree);
 
-    cout << "Minimum val in the BST is: " 
-         << mytree.Find_Minimum_Val(mytree.Get_Root())->data << endl;
+    
     
     return 0;
 } 
