@@ -120,11 +120,35 @@ public:
     }
 
     // check if tree is empty 
-    bool isEmpty(BinarySearchTree mytree) {
-        if (mytree.Get_Root() != nullptr) {
-            return true;
+    bool isEmpty() {
+        if (this->Get_Root() != nullptr) {
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    // return the integer sum held in BST
+    // takes advantage of inorder traversal logic.
+    // 4 different situations possible:
+        // current node has both a left and right child, or left and no right,
+        // or right and no left, or none 
+    int Sum(BSTNode* root) {
+        // if you have no child nodes
+        if ((root->leftChild == nullptr) && (root->rightChild == nullptr)) {
+            return root->data;
+        }
+        // if you have a left child node and no right child node
+        else if ((root->leftChild != nullptr) && (root->rightChild == nullptr)) {
+            return Sum(root->leftChild) + root->data;
+        }
+        // if you have a right child and no left child
+        else if ((root->rightChild != nullptr) && (root->leftChild == nullptr)) {
+            return root->data + Sum(root->rightChild);
+        }
+        // if you have both a left and right child 
+        else {
+            return Sum(root->leftChild) + root->data + Sum(root->rightChild);
+        }
     }
 
     // inorder traversal of the nodes
@@ -217,6 +241,12 @@ int main() {
     Check_Max_Val(mytree);
     Check_Min_Val(mytree);
 
+    if (!mytree.isEmpty()) {
+        cout << "Total Sum is: " << mytree.Sum(mytree.Get_Root()) << endl;
+    }
+    else {
+        cout << "Empty tree has no elements to sum." << endl;
+    }
     
     
     return 0;
