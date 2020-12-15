@@ -125,7 +125,7 @@ public:
                 int IOP = Find_Maximum_Val(root->leftChild)->data;
                 // copy IOP to N
                 root->data = IOP;
-                // delete the IOP val (feeing in N's left child as root)
+                // delete the IOP val (feeding in N's left child as root)
                 root->leftChild = Remove(root->leftChild, IOP);
             }
         }
@@ -174,7 +174,7 @@ public:
     // 4 different situations possible:
         // current node has both a left and right child, or left and no right,
         // or right and no left, or none 
-    int Sum(BSTNode* root) {
+    int Sum(BSTNode* root) const {
         // if you have no child nodes
         if ((root->leftChild == nullptr) && (root->rightChild == nullptr)) {
             return root->data;
@@ -193,29 +193,48 @@ public:
         }
     }
 
+    // return the total number of nodes currently in the BST 
+    int TotalNumNodes(BSTNode* root) const {
+        if (root == nullptr) {
+            return 0;
+        }
+        if ((root->leftChild == nullptr) && (root->rightChild == nullptr)) {
+            return 1;
+        }
+        else if (root->leftChild == nullptr) {
+            return 1 + TotalNumNodes(root->rightChild);
+        }
+        else if (root->rightChild == nullptr) {
+            return 1 + TotalNumNodes(root->leftChild);
+        }
+        else {
+            return 1 + TotalNumNodes(root->leftChild) + TotalNumNodes(root->rightChild);
+        }
+    } 
+
     // inorder traversal of the nodes
-    void Print_Inorder(BSTNode*root) {
+    void Print_Inorder(BSTNode*root) const {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         cout << "Node value: " << root->data << endl;
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
     }
 
     // opposite of inorder traversal; prints nodes of BST in descending order
-    void Print_Descending_Order(BSTNode* root) {
+    void Print_Descending_Order(BSTNode* root) const {
         if (root->rightChild != nullptr) Print_Descending_Order(root->rightChild);
         cout << "Node value: " << root->data << endl;
         if (root->leftChild != nullptr) Print_Descending_Order(root->leftChild);
     }
 
     // preorder traversal of the nodes
-    void Print_Preorder(BSTNode*root) {
+    void Print_Preorder(BSTNode*root) const {
         cout << "Node value: " << root->data << endl;
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
     }
 
     // postorder traversal of the nodes
-    void Print_Postorder(BSTNode*root) {
+    void Print_Postorder(BSTNode*root) const {
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
         cout << "Node value: " << root->data << endl;
@@ -254,9 +273,14 @@ void Check_Min_Val(BinarySearchTree mytree) {
     }
 }
 
+void Check_TotalNumNodes(BinarySearchTree mytree) {
+    cout << "There are: " << mytree.TotalNumNodes(mytree.Get_Root())
+    << " total nodes in the BST.\n";
+}
+
 int main() {
     BinarySearchTree mytree;
-    int test_array[] = {14, 10, 20, 3, 13, 19};
+    int test_array[] = {90,14,16,15,10,8,12,110,100,120,105};
 
     // I forgot that you gotta use vector to get the size()/length() methods.
     // For array you gotta use the sizeof() operator trick.
@@ -290,6 +314,14 @@ int main() {
         cout << "Empty tree has no elements to sum." << endl;
     }
     
-    
+    Check_TotalNumNodes(mytree);
+
+    // remove 14 from the BST
+    cout << "\n\n";
+    mytree.Set_Root(mytree.Remove(mytree.Get_Root(), 14));
+    // print the inorder to check deletion result
+    mytree.Print_Inorder(mytree.Get_Root());
+    Check_TotalNumNodes(mytree);
+
     return 0;
 } 
