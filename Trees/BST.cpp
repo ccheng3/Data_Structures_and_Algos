@@ -87,7 +87,49 @@ public:
     
     // recursive Node deletion function
     BSTNode* Remove(BSTNode* root, int data) {
-
+        if (root == nullptr) {
+            return root;
+        }
+        else if (data < root->data) {
+            // recursively point the current node's left to the return of the call
+            // the return may or may not be the same node from pre-deletion
+            // same logic as with insertion function; (connect the call's return with
+            // the pertinent child pointer)
+            root->leftChild = Remove(root->leftChild, data);
+        }
+        else if (data > root->data) {
+            // the return may or may not be the same node from pre-deletion
+            root->rightChild = Remove(root->rightChild, data);
+        }
+        // the value has been found and one of the three deletion steps occurs
+        else {
+            // 0 child node deletion
+            if ((root->leftChild == nullptr) && (root->rightChild == nullptr)) {
+                delete root;
+                root = nullptr;
+            }
+            // 1 child node deletion
+            else if (root->leftChild == nullptr) {
+                BSTNode* temp = root;
+                root = root->rightChild;
+                delete temp;
+            }
+            else if (root->rightChild == nullptr) {
+                BSTNode* temp = root;
+                root = root->leftChild;
+                delete temp;
+            }
+            // 2 child node deletion    
+            else {
+                // find N's IOP (max val of N's left subtree)
+                int IOP = Find_Maximum_Val(root->leftChild)->data;
+                // copy IOP to N
+                root->data = IOP;
+                // delete the IOP val (feeing in N's left child as root)
+                root->leftChild = Remove(root->leftChild, IOP);
+            }
+        }
+        return root;
     }
 
     // return a pointer to min int value in BST or a nullptr if empty tree
