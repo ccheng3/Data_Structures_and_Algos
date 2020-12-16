@@ -132,6 +132,20 @@ public:
         return root;
     }
 
+    // delete all nodes from the BST in postorder fashion 
+    // (delete left subtree, right subtree, then root)
+    BSTNode* Clear(BSTNode* root) {
+        // base case: node is a leaf node
+        if (root->leftChild != nullptr) {
+            root->leftChild = Clear(root->leftChild);
+        }
+        if (root->rightChild != nullptr) {
+            root->rightChild = Clear(root->rightChild);
+        }
+            delete root;
+        return nullptr;
+    }
+
     // return a pointer to min int value in BST or a nullptr if empty tree
     BSTNode* Find_Minimum_Val(BSTNode* root) {
         // empty tree case
@@ -195,18 +209,23 @@ public:
 
     // return the total number of nodes currently in the BST 
     int TotalNumNodes(BSTNode* root) const {
+        // empty tree case
         if (root == nullptr) {
             return 0;
         }
+        // node with no child nodes case
         if ((root->leftChild == nullptr) && (root->rightChild == nullptr)) {
             return 1;
         }
+        // node with 1 child node, a right child case
         else if (root->leftChild == nullptr) {
             return 1 + TotalNumNodes(root->rightChild);
         }
+        // node with 1 child node, a left child case
         else if (root->rightChild == nullptr) {
             return 1 + TotalNumNodes(root->leftChild);
         }
+        // node with 2 children case
         else {
             return 1 + TotalNumNodes(root->leftChild) + TotalNumNodes(root->rightChild);
         }
@@ -214,6 +233,10 @@ public:
 
     // inorder traversal of the nodes
     void Print_Inorder(BSTNode*root) const {
+        if (root == nullptr) {
+            cout << "Tree is empty, nothing to print.\n"; 
+            return;
+        } 
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         cout << "Node value: " << root->data << endl;
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
@@ -221,6 +244,10 @@ public:
 
     // opposite of inorder traversal; prints nodes of BST in descending order
     void Print_Descending_Order(BSTNode* root) const {
+        if (root == nullptr) {
+            cout << "Tree is empty, nothing to print.\n"; 
+            return;
+        }
         if (root->rightChild != nullptr) Print_Descending_Order(root->rightChild);
         cout << "Node value: " << root->data << endl;
         if (root->leftChild != nullptr) Print_Descending_Order(root->leftChild);
@@ -228,6 +255,10 @@ public:
 
     // preorder traversal of the nodes
     void Print_Preorder(BSTNode*root) const {
+        if (root == nullptr) {
+            cout << "Tree is empty, nothing to print.\n"; 
+            return;
+        }
         cout << "Node value: " << root->data << endl;
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
@@ -235,6 +266,10 @@ public:
 
     // postorder traversal of the nodes
     void Print_Postorder(BSTNode*root) const {
+        if (root == nullptr) {
+            cout << "Tree is empty, nothing to print.\n"; 
+            return;
+        }
         if (root->leftChild != nullptr) Print_Inorder(root->leftChild);
         if (root->rightChild != nullptr) Print_Inorder(root->rightChild);
         cout << "Node value: " << root->data << endl;
@@ -316,12 +351,20 @@ int main() {
     
     Check_TotalNumNodes(mytree);
 
-    // remove 14 from the BST
+    // // remove 14 from the BST
+    // cout << "\n\n";
+    // mytree.Set_Root(mytree.Remove(mytree.Get_Root(), 14));
+    // // print the inorder to check deletion result
+    // mytree.Print_Inorder(mytree.Get_Root());
+    // Check_TotalNumNodes(mytree);
+
     cout << "\n\n";
-    mytree.Set_Root(mytree.Remove(mytree.Get_Root(), 14));
-    // print the inorder to check deletion result
-    mytree.Print_Inorder(mytree.Get_Root());
+
+    // Need to set BST's root to the last return of the clear function,
+    // which is a nullptr
+    mytree.Set_Root(mytree.Clear(mytree.Get_Root()));
     Check_TotalNumNodes(mytree);
+    mytree.Print_Inorder(mytree.Get_Root());
 
     return 0;
 } 
